@@ -5,15 +5,21 @@
 
 **Language / Язык:** **English** · [Русский](README.md)
 
-> **RU:** Полностью локальный анализ звонков: Whisper large-v3 с диаризацией
-> pyannote и отчётом по качеству от локального qwen2.5 через Ollama. Интернет
-> после установки не нужен, аудио не покидает компьютер. Есть установщик для
-> Windows без прав администратора, веб-интерфейс с доступом по LAN и токеном,
-> а также вариант с Docker. Полная русская документация: [README.md](README.md).
+> **RU:** `call-analyzer` — локальная система анализа звонков контакт-центра:
+> расшифровка с разделением по говорящим и структурированный отчёт о качестве
+> работы оператора. Обработка выполняется на инфраструктуре организации, без
+> передачи записей третьим лицам и без интернета после установки.
 
-Drop an audio recording into a browser and get a speaker-labeled transcript plus
-a quality-control report for the agent. Everything runs on your computer: after
-installation no internet is needed and no audio leaves the machine.
+`call-analyzer` is an on-premise call-center analytics system. It accepts a
+recording through a web interface and produces a speaker-labeled transcript
+together with a structured assessment of the agent–customer interaction.
+
+All processing is performed on your own infrastructure: call recordings are not
+sent to third-party services, and no internet connection is required after
+installation. The solution is intended for restricted-network environments and
+for handling personal data that must remain within the organization's perimeter.
+
+Typical use cases include quality monitoring, call review and agent training.
 
 ```
 mp3/wav/m4a/ogg/video
