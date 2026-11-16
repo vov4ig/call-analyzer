@@ -3,6 +3,14 @@
 [![CI](https://github.com/vov4ig/call-analyzer/actions/workflows/ci.yml/badge.svg)](../../actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+**Language / Язык:** **English** · [Русский](README.md)
+
+> **RU:** Полностью локальный анализ звонков: Whisper large-v3 с диаризацией
+> pyannote и отчётом по качеству от локального qwen2.5 через Ollama. Интернет
+> после установки не нужен, аудио не покидает компьютер. Есть установщик для
+> Windows без прав администратора, веб-интерфейс с доступом по LAN и токеном,
+> а также вариант с Docker. Полная русская документация: [README.md](README.md).
+
 Drop an audio recording into a browser and get a speaker-labeled transcript plus
 a quality-control report for the agent. Everything runs on your computer: after
 installation no internet is needed and no audio leaves the machine.
