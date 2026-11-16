@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Compile all Python sources
+        run: python -m compileall -q .
+
+      - name: Unit tests (no GPU, no models, no network)
+        run: python -m unittest discover -s tests -v
+
+      - name: Check PowerShell syntax
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $bad = 0
+          Get-ChildItem -Recurse -Filter *.ps1 | ForEach-Object {
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              $_.FullName, [ref]$null, [ref]$errors)
+            if ($errors.Count -gt 0) {
+              Write-Error "$($_.FullName): $($errors.Count) parse error(s)"
+              $bad++
+            }
+          }
+          if ($bad -gt 0) { exit 1 }
+
+  lint-docker:
+    name: docker compose syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate compose file
+        run: |
+          if docker compose version >/dev/null 2>&1; then
+            docker compose -f docker-compose.yml config --quiet
+          else
+            echo "docker compose is unavailable on the runner; skipped"
+          fi

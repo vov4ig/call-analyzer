@@ -1,0 +1,56 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: call-analyzer:1.0.0
+    container_name: call-analyzer-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - call-analyzer_data:/data
+      - ollama_models:/ollama-models
+    environment:
+      CALL_ANALYZER_HOME: /data
+      OLLAMA_HOST: http://ollama:11434
+      OLLAMA_MODELS: /ollama-models
+      CALL_ANALYZER_TOKEN: ${CALL_ANALYZER_TOKEN:-}
+      PYTHONIOENCODING: utf-8
+    depends_on:
+      - ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: call-analyzer-ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_models:/ollama-models
+    environment:
+      OLLAMA_MODELS: /ollama-models
+    # Exposing 11434 is optional; the app reaches it over the compose network.
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+volumes:
+  call-analyzer_data:
+  ollama_models:

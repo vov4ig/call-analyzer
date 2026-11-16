@@ -1,0 +1,40 @@
+# ---- data produced at runtime (never commit) --------------------------------
+models/
+audio/
+out/
+web/jobs/
+web/meta/
+logs/
+tmp/
+installers/
+
+# ---- model weights ----------------------------------------------------------
+*.bin
+*.pth
+*.pt
+*.onnx
+*.safetensors
+*.gguf
+*.zip
+*.exe
+
+# ---- python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.freeze.txt
+
+# ---- docker -----------------------------------------------------------------
+docker/data/
+
+# ---- os / editors -----------------------------------------------------------
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.swp
